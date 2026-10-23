@@ -240,7 +240,7 @@ As an independent structural control (adapted from Cook & Buckley 2009), a conti
 Clone the repository and set up a virtual environment:
 
 ```bash
-git clone https://github.com/shreesomnath/nepal_monsoon_timing.git
+git clone https://github.com/shreesomnath/nepal_monsoon_study.git
 cd nepal_monsoon_timing
 
 # Create and activate Python virtual environment
@@ -330,7 +330,7 @@ If you use this codebase, methodology, or derived tables in your research, pleas
   year         = {2026},
   publisher    = {GitHub},
   journal      = {GitHub repository},
-  howpublished = {\url{https://github.com/shreesomnath/nepal_monsoon_timing}},
+  howpublished = {\url{https://github.com/shreesomnath/nepal_monsoon_study}},
   note         = {ORCID: 0009-0009-8669-4245. Western Kentucky University}
 }
 ```
