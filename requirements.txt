@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+matplotlib
+pyshp
+shapely
+h5py
+fsspec
+requests
+python-docx
+Pillow

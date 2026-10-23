@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this code or the derived data, please cite it as below."
+title: "nepal_monsoon_timing: code and derived data for the test of Nepal's declared monsoon dates against rainfall"
+type: software
+authors:
+  - family-names: Luitel
+    given-names: Somnath
+    orcid: "https://orcid.org/0009-0009-8669-4245"
+    affiliation: "Western Kentucky University, Bowling Green, Kentucky, USA"
+repository-code: "https://github.com/shreesomnath/nepal_monsoon_timing"
+license: MIT

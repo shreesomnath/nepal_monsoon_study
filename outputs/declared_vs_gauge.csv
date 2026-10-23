@@ -1,0 +1,7 @@
+event,gauge_region,n,pearson_r,p,spearman,mean_diff_d,slope_gauge,slope_declared
+onset,East,0,,,,,,
+onset,All,0,,,,,,
+withdrawal,East,1,,,,0.0,,
+withdrawal,All,1,,,,0.0,,
+length,East,0,,,,,,
+length,All,0,,,,,,

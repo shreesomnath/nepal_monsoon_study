@@ -1,0 +1,13 @@
+event,region,composite_slope_d_per_decade,composite_p,n_years,n_stations,station_median_slope,local_sig_neg,local_sig_pos,field_p_neg,field_p_pos
+onset,Central,,,0,1,2.380952380952381,,,,
+onset,East,,,0,3,0.625,,,,
+onset,West,,,1,0,,,,,
+onset,All,,,0,4,1.5029761904761905,,,,
+withdrawal,Central,,,1,4,-0.827922077922078,,,,
+withdrawal,East,,,1,17,-0.7142857142857142,1.0,1.0,0.244,0.294
+withdrawal,West,,,3,4,-3.528903162055336,,,,
+withdrawal,All,,,1,25,-0.8893280632411067,2.0,2.0,0.102,0.126
+length,Central,,,0,0,,,,,
+length,East,,,0,2,-2.2201399300349824,,,,
+length,West,,,0,0,,,,,
+length,All,,,0,2,-2.2201399300349824,,,,
