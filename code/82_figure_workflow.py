@@ -65,7 +65,7 @@ for x in (28.5, 73.5, 118.5, 160.5):
 # ---- checks ----
 box(8, 75, 41, 24, "Synthetic seasons\nknown dates; 3 station types,\n3 transition widths,\n0 to 15% missing days", ORANGE)
 box(53, 75, 41, 24, "Block-shuffled real seasons\nno transition: false-alarm\nthreshold of the change point", ORANGE)
-box(98, 75, 41, 24, "Neighbouring gauges\nagreement within 7 days;\nERA5 against gauges\n(agreement ceiling)", ORANGE)
+box(98, 75, 41, 24, "Neighbouring gauges\nagreement within 7 days;\nERA5 against gauges\n(agreement benchmark)", ORANGE)
 box(143, 75, 35, 24, "Split-half reliability\nrandom halves of the\nstations, Spearman-Brown\ncorrection", ORANGE)
 for x in (28.5, 73.5):
     arrow(x, 64, x, 75, ORANGE)

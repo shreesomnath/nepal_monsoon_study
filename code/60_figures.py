@@ -171,12 +171,15 @@ label(axs[0], "a"); label(axs[1], "b")
 save(fig, "figA4_agreement_ceiling")
 
 # ---------------------------------------------------------------- Figure A5: lengthening test
-ci = pd.read_csv(OUT / "composite_slopes_block_bootstrap.csv")
-ci = ci[ci.event == "withdrawal"]
+ci = pd.read_csv(OUT / "table3_numeric.csv")                    # one source for the slope intervals (code 77)
+ci = ci[ci.series.str.startswith("Gauge")].copy()
+ci["definition"] = ci.series.str.extract(r"Gauge (WiKS|two-knot)")[0]
+ci["set"] = ci.series.str.split(", ").str[1]
+ci = ci.rename(columns={"slope_lo": "boot_lo", "slope_hi": "boot_hi"})
 lt = pd.read_csv(OUT / "robust_late_season_trends.csv")
 fig, axs = plt.subplots(1, 2, figsize=(180 * MM, 62 * MM), layout="constrained", gridspec_kw={"width_ratios": [1.15, 1]})
 ax = axs[0]
-names = ["All", "East provinces", "East of 86E"]
+names = ["All", "East province group", "East of 86E"]
 ypos = np.arange(len(names))[::-1] + 1
 for off, (dname, colr, lab_) in zip((0.15, -0.15), (("WiKS", BLUE, "WiKS"), ("two-knot", ORANGE, "Two-knot"))):
     for y_, nm in zip(ypos, names):
@@ -186,7 +189,7 @@ for off, (dname, colr, lab_) in zip((0.15, -0.15), (("WiKS", BLUE, "WiKS"), ("tw
 ax.axvline(6.2, color=VERM, lw=1.6)
 ax.text(6.0, len(names) + 0.6, "DHM declared\n+6.2 d per decade", color=VERM, fontsize=7.5, va="top", ha="right")
 ax.legend(loc="upper left", frameon=False, fontsize=7)
-w = pd.DataFrame({"set": ["All stations", "East provinces", "East of 86\u00b0E"]})
+w = pd.DataFrame({"set": ["All stations", "East province group", "East of 86\u00b0E"]})
 ax.axvline(0, color=INK, lw=0.7)
 ax.set_yticks(ypos); ax.set_yticklabels(list(w.set)); ax.set_ylim(0.4, len(w) + 0.9); ax.set_xlim(-8, 7)
 ax.set_xlabel("Withdrawal trend 1981–2017 (days per decade)\ngauge composites, 95% block-bootstrap interval"); clean(ax, "x")

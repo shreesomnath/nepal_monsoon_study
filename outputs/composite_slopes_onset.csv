@@ -1,0 +1,7 @@
+series,event,n_stations,slope,lo,hi
+"Gauge WiKS, All",onset,213,-0.3851851851851852,-4.3478260869565215,4.641148325358851
+"Gauge WiKS, East province group",onset,109,-0.42572463768115937,-5.0,5.0
+"Gauge WiKS, East of 86E",onset,52,-2.381552419354839,-6.304347826086957,3.6363636363636367
+"Gauge two-knot, All",onset,213,0.0,-4.0,2.24652777777774
+"Gauge two-knot, East province group",onset,109,0.0,-2.6666666666666665,3.6363636363636367
+"Gauge two-knot, East of 86E",onset,52,0.0,-5.909090909090909,6.0

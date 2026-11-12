@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌧️ nepal_monsoon_timing
+# 🌧️ nepal_monsoon_study
 
 ### Testing Nepal's Declared Summer Monsoon Calendar Against Multi-Source Rainfall Observations (1981–2023)
 
@@ -8,7 +8,6 @@
 
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Status](https://img.shields.io/badge/status-research%20codebase-brightgreen)](#)
-[![Derived data](https://img.shields.io/badge/derived%20tables-CC%20BY%204.0-brightgreen)](https://creativecommons.org/licenses/by/4.0/)
 [![Code License](https://img.shields.io/badge/code%20license-MIT-yellow.svg)](LICENSE)
 [![Raw DHM data](https://img.shields.io/badge/raw%20DHM%20data-restricted-lightgrey)](https://www.dhm.gov.np)
 [![Author](https://img.shields.io/badge/author-Somnath%20Luitel-blue)](https://orcid.org/0009-0009-8669-4245)
@@ -126,8 +125,8 @@ flowchart TD
 ## 📁 Repository Structure
 
 ```
-nepal_monsoon_timing/
-├── code/                      # Python analysis pipeline (steps 50–79, 82)
+nepal_monsoon_study/
+├── code/                      # Python analysis pipeline (steps 50–79, 82, 85, 86)
 │   ├── config.py              # Frozen study parameters, paths, and detection rules
 │   ├── wiks.py                # Core WiKS dual-test change-point detection algorithm
 │   ├── cb.py                  # Cook-Buckley two-knot cumulative rainfall model
@@ -164,7 +163,9 @@ nepal_monsoon_timing/
 │   ├── 77_table3.py           # Synthesis Table 3 generation
 │   ├── 78_figure1_network.py  # Station network and spatial distribution figure
 │   ├── 79_karki_homogeneous_subset.py # Sensitivity to Karki et al. (2017) network
-│   └── 82_figure_workflow.py # Methodological workflow diagram generator
+│   ├── 82_figure_workflow.py  # Methodological workflow diagram generator
+│   ├── 85_animation_climatology.py # Climatology animation of daily rainfall
+│   └── 86_figure_snapshots.py # Climatology snapshot figure
 ├── docs/                      # Documentation assets and diagrams
 │   └── workflow.png           # Rendered workflow diagram
 ├── inputs/                    # Small public input subsets
@@ -172,7 +173,6 @@ nepal_monsoon_timing/
 │   └── olr_nepal_2018_2022.csv# NOAA PSL interpolated OLR (2018–2022)
 ├── outputs/                   # 60+ derived tables (dates, composites, trends, tests)
 │   ├── anomaly_composites.csv
-│   ├── budget_station_seasons.csv
 │   ├── cb_station_dates.csv
 │   ├── declared_vs_gauge_all.csv
 │   ├── dhm_declared_dates.csv
@@ -203,7 +203,7 @@ nepal_monsoon_timing/
 | **Satellite OLR Analysis** | `63`, `63b`, `64`, `65`, `68` | Fetches NOAA PSL daily OLR via targeted HTTP range requests. Replicates published OLR onset rules (Adhikari et al. 2022) and executes a 900-configuration parameter sweep. | `olr_dates.csv`, `olr_adhikari_compare.csv`, `olr_onset_sensitivity.csv` |
 | **Recent Seasons (2018–2023)** | `69`, `74`, `75` | Evaluates recent late withdrawals against the 1981–2017 climatology using station-anomaly composites and leave-one-year-out (LOYO) cross-validation. | `recent_years_summary.csv`, `recent_years_withdrawal_by_year.csv`, `anomaly_composites.csv` |
 | **Direct Hypothesis Testing** | `71`, `72`, `76`, `77`, `79` | Performs explicit hypothesis tests on $(\text{Declared} - \text{Gauge})$ difference series. Runs 100-replicate synthetic trend recovery. Executes 4,000-draw moving-block bootstrap. Generates Table 3 and evaluates sensitivity to the Karki et al. (2017) homogeneous subset. | `diff_series_tests.csv`, `recovery_synthetic_many.csv`, `composite_slopes_block_bootstrap.csv`, `table3_lengthening_test.md`, `karki_subset_results.csv` |
-| **Publication Figures** | `60`, `66`, `70`, `78`, `82` | Generates publication-ready figures conforming to journal standards (600 dpi PNG, vector PDF, Okabe-Ito colorblind-safe palette, 180 mm single/double column widths). | `figA1`–`figA6`, `figA7_olr`, `figA8_recent`, `fig1_network`, `figW_workflow` |
+| **Publication Figures** | `60`, `66`, `70`, `78`, `82`, `85`, `86` | Generates publication-ready figures conforming to journal standards (600 dpi PNG, vector PDF, Okabe-Ito colorblind-safe palette, 180 mm single/double column widths). | `figA1`–`figA6`, `figA7_olr`, `figA8_recent`, `fig1_network`, `figW_workflow` |
 
 </details>
 
@@ -241,7 +241,7 @@ Clone the repository and set up a virtual environment:
 
 ```bash
 git clone https://github.com/shreesomnath/nepal_monsoon_study.git
-cd nepal_monsoon_timing
+cd nepal_monsoon_study
 
 # Create and activate Python virtual environment
 python3 -m venv .venv
@@ -304,17 +304,17 @@ print(f"Detected Withdrawal: Day {result['withdrawal']} (Truth: 268)")
 | **DHM Declared Dates** | Official onset/withdrawal (1968–2024) | Operational reference calendar | Publicly issued bulletins, compiled and transcribed in [`outputs/dhm_declared_dates.csv`](outputs/dhm_declared_dates.csv). |
 | **ERA5 Atmospheric Reanalysis** | Hourly precipitation on $0.25^\circ \times 0.25^\circ$ grid | Gridded reanalysis check | Publicly accessible via Copernicus Climate Data Store ([doi:10.24381/cds.adbb2d47](https://doi.org/10.24381/cds.adbb2d47)). |
 | **NOAA Interpolated OLR** | Daily $2.5^\circ \times 2.5^\circ$ resolution (Liebmann & Smith 1996) | Convective proxy check | Publicly available from the NOAA Physical Sciences Laboratory ([psl.noaa.gov](https://psl.noaa.gov)). Extracted Nepal subset provided in [`inputs/`](inputs/). |
-| **Derived Data Tables** | 60+ CSV summary tables | Full study results | Completely open and shared for research under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) in [`outputs/`](outputs/). |
+| **Derived Data Tables** | CSV summary tables (station-year dates, composites, trends, tests) | Study results | Shared for research use in [`outputs/`](outputs/), subject to DHM's data terms. Daily station rainfall is not included. |
 
 ---
 
 ## 📄 License
 
-This project applies open science licensing across code and derived data:
+Licensing of code, derived tables and the underlying observations:
 
 * **Code & Scripts (`code/`, configuration, and notebooks):** Distributed under the [MIT License](LICENSE).  
   Copyright (c) 2026 Somnath Luitel.
-* **Derived Data & Tables (`outputs/`):** Made available under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share, copy, redistribute, and adapt the tables with appropriate credit given to Somnath Luitel.
+* **Derived Data & Tables (`outputs/`):** Shared for research purposes with credit to Somnath Luitel. They are derived from DHM records and remain subject to DHM's data terms.
 * **Primary Observational Data:** Rain gauge time series remain the intellectual property of the Department of Hydrology and Meteorology (DHM), Government of Nepal, and are governed by DHM's national data access terms.
 
 ---
@@ -324,9 +324,9 @@ This project applies open science licensing across code and derived data:
 If you use this codebase, methodology, or derived tables in your research, please cite:
 
 ```bibtex
-@software{luitel2026_nepal_monsoon_timing,
+@software{luitel2026_nepal_monsoon_study,
   author       = {Luitel, Somnath},
-  title        = {{nepal\_monsoon\_timing: Code and Derived Data for Testing Nepal's Declared Monsoon Dates Against Rainfall}},
+  title        = {{nepal\_monsoon\_study: Code and Derived Data for Testing Nepal's Declared Monsoon Dates Against Rainfall}},
   year         = {2026},
   publisher    = {GitHub},
   journal      = {GitHub repository},

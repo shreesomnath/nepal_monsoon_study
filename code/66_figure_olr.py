@@ -50,7 +50,7 @@ rb = np.corrcoef(b['2cells_25-27.5N_87.5E'], b.ad_mfd)[0, 1]
 ax.scatter(b["2cells_25-27.5N_87.5E"], b.ad_mfd, s=14, marker="^", color=VERM)
 ax.set_xlabel("OLR fall date (day of year)"); ax.set_ylabel("DHM declared onset (day of year)")
 ax.set_title("Onset", loc="left", fontsize=9)
-ax.text(0.02, 0.98, f"published 1° OLR (circles): r = {ra:.2f}\nthis study, 2.5° OLR (triangles): r = {rb:.2f}",
+ax.text(0.02, 0.98, f"Adhikari et al. tabulated dates (circles): r = {ra:.2f}\nthis study, 2.5° OLR (triangles): r = {rb:.2f}",
         transform=ax.transAxes, ha="left", va="top", fontsize=6.5)
 ax.set_ylim(150, 188); clean(ax)
 ax = axs[1]
@@ -83,7 +83,7 @@ sens = pd.read_csv(OUT / "olr_onset_sensitivity.csv")
 ax.hist(sens.r_declared, bins=np.arange(-0.4, 0.85, 0.05), color=PURPLE, ec="white", lw=0.4)
 ax.axvline(sens.r_declared.median(), color=INK, lw=0.9)
 ax.axvline(0.53, color=VERM, lw=1.6)
-ax.text(0.55, 0.97, "published\n(1\u00b0 OLR) 0.53", color=VERM, fontsize=6.5, transform=ax.get_xaxis_transform(), va="top", ha="left")
+ax.text(0.55, 0.97, "Adhikari et al.\ntable: 0.53", color=VERM, fontsize=6.5, transform=ax.get_xaxis_transform(), va="top", ha="left")
 ax.text(sens.r_declared.median() - 0.02, 0.97, f"median\n{sens.r_declared.median():.2f}", fontsize=6.5, transform=ax.get_xaxis_transform(), va="top", ha="right")
 ax.set_xlabel("Correlation of OLR onset with declared onset"); ax.set_ylabel("Combinations (n = %d)" % len(sens))
 ax.set_title("Onset, 900 choices", loc="left", fontsize=9); clean(ax)

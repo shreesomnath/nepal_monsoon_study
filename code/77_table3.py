@@ -101,22 +101,38 @@ def recent(s):
     return d, d - 2.03 * se, d + 2.03 * se
 
 
-rows = []
+rows, numrows = [], []
 for name, y, n, _ in series:
     r = dict(series=name.replace("East provinces", "East province group"), n_stations=n if n else "")
-    r["slope"] = fmt(slope_ci(y))
-    r["step_1997"] = fmt(step_ci(y))
+    sc, st_ = slope_ci(y), step_ci(y)          # same call order as before, so the seeded draws are unchanged
+    r["slope"], r["step_1997"] = fmt(sc), fmt(st_)
+    num = dict(series=r["series"], slope=sc[0], slope_lo=sc[1], slope_hi=sc[2], step=st_[0], step_lo=st_[1], step_hi=st_[2])
     if name.startswith("Declared"):
         r["diff_slope"], r["r_declared"] = "", ""
     else:
         ok = np.isfinite(y)
         d = np.where(ok, dec - y, np.nan)
-        r["diff_slope"] = fmt(slope_ci(d))
+        dc = slope_ci(d)
+        r["diff_slope"] = fmt(dc)
+        num.update(diff_slope=dc[0], diff_lo=dc[1], diff_hi=dc[2])
         r["r_declared"] = f"{np.corrcoef(y[ok], dec[ok])[0, 1]:+.2f}"
     r["recent_diff"] = fmt(recent(recent_src[name])) if name in recent_src else ""
     rows.append(r)
+    numrows.append(num)
 T = pd.DataFrame(rows)
 T.to_csv(OUT / "table3_lengthening_test.csv", index=False)
+pd.DataFrame(numrows).to_csv(OUT / "table3_numeric.csv", index=False)      # numeric copy, the single source of the slope intervals
+
+# onset composites: separate random stream so that the draws behind Table 3 do not change
+rng = np.random.default_rng(177)
+orow = []
+for name, df, col in (("Gauge WiKS", wk, "onset"), ("Gauge two-knot", cbd, "cb_onset")):
+    for sname, fn in SETS.items():
+        y, n = comp(fn(df), col)
+        sc = slope_ci(y)
+        orow.append(dict(series=f"{name}, {sname.replace('East provinces', 'East province group')}", event="onset", n_stations=n, slope=sc[0], lo=sc[1], hi=sc[2]))
+pd.DataFrame(orow).to_csv(OUT / "composite_slopes_onset.csv", index=False)
+print(pd.DataFrame(orow).round(2).to_string(index=False))
 cols = ["Series", "Stations", "Slope 1981 to 2017 (days per decade)", "Step 1997 to 2017 minus 1981 to 1996 (days)",
         "Slope of declared minus series (days per decade)", "r with declared", "2018 to 2023 minus 1981 to 2017 (days)"]
 md = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols) + "\n"
